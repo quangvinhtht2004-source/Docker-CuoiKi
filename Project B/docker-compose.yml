@@ -1,11 +1,14 @@
 version: '3.8'
 services:
-  react-app:
+  app:
     build: .
     ports:
       - "3000:3000"
     volumes:
       - .:/app
-      - /app/node_modules # Tránh ghi đè node_modules trong container
+      - /app/node_modules
+    # Dòng này cực quan trọng với Windows để sửa code nó tự cập nhật (Hot reload)
     environment:
-      - CHOKIDAR_USEPOLLING=true # Giúp hot-reload hoạt động tốt trên Docker Windows
+      - CHOKIDAR_USEPOLLING=true
+    stdin_open: true
+    tty: true
