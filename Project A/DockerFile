@@ -1,0 +1,24 @@
+# Sử dụng image PHP chính chủ
+FROM php:8.2-fpm
+
+# Cài đặt các thư viện hệ thống cần thiết cho Laravel
+RUN apt-get update && apt-get install -y \
+    libpng-dev \
+    zip \
+    unzip \
+    git \
+    curl
+
+# Cài đặt PHP extensions
+RUN docker-php-ext-install pdo pdo_mysql gd
+
+# Cài đặt Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Thiết lập thư mục làm việc
+WORKDIR /var/www
+
+# Copy toàn bộ code vào container (sẽ dùng volume đè lên khi dev)
+COPY . .
+
+CMD ["php-fpm"]
